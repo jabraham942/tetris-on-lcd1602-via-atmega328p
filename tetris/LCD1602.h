@@ -38,10 +38,11 @@
 //---------------------------------------
 void setup_AVR_ports()
 {
- PORTC |= ((1 << PORTC0) | (1 << PORTC1)); //Turn on Pull-up resistor for PC0 and PC1
- DDRC = 0x00; // Configure Ports C0 and C1 as input ports
- 
- DDRB = 0x3F; // Configure Ports B5 - B0 as output ports
+	
+	PORTC |= ((1 << PORTC0) | (1 << PORTC1)); //Turn on Pull-up resistor for PC0 and PC1
+	DDRC = 0x00; // Configure Ports C0 and C1 as input ports
+	 
+	DDRB = 0x3F; // Configure Ports B5 - B0 as output ports
 
  
  
@@ -64,8 +65,8 @@ void setup_ADC()
 {
 
 	DIDR0 = 0x03; // Disable Digital input for C0 and C1
-	
-    ADCSRA |=(1<ADPS2)|(1<ADPS1) |(1<<ADPS0) | (1<<ADEN); //Enable ADC and use prescaler = 128
+		
+	ADCSRA |=(1<ADPS2)|(1<ADPS1) |(1<<ADPS0) | (1<<ADEN); //Enable ADC and use prescaler = 128
 	ADMUX |=(1<<REFS0);//Using AVcc as Reference Voltage
 	
 }
@@ -85,11 +86,11 @@ void setup_ADC()
 //---------------------------------------
 void pulse_enable_pin()
 {
- enable_bit(PORTB,ENABLE); 
- 
- _delay_us(50); 
- 
- disable_bit(PORTB,ENABLE); 
+	enable_bit(PORTB,ENABLE); 
+	 
+	_delay_us(50); 
+	 
+	disable_bit(PORTB,ENABLE); 
 }
 
 
@@ -107,25 +108,25 @@ void pulse_enable_pin()
 //---------------------------------------
 void send_half_byte(uint8_t input_byte)
 {
- PORTB &= 0xC3; // Set B5 - B2 to zero
- 
- if ((1 << 7) & input_byte) {
-	 enable_bit(PORTB,D7);
- }
- 
- if ((1 << 6) & input_byte) {
-	 enable_bit(PORTB,D6);
- }
- 
- if ((1 << 5) & input_byte) {
-	 enable_bit(PORTB,D5);
- }
- 
- if ((1 << 4) & input_byte) {
-	 enable_bit(PORTB,D4);
- }
- 
- pulse_enable_pin(); 
+	PORTB &= 0xC3; // Set B5 - B2 to zero
+	 
+	if ((1 << 7) & input_byte) {
+		enable_bit(PORTB,D7);
+	}
+	 
+	if ((1 << 6) & input_byte) {
+		enable_bit(PORTB,D6);
+	}
+	 
+	if ((1 << 5) & input_byte) {
+		enable_bit(PORTB,D5);
+	}
+	 
+	if ((1 << 4) & input_byte) {
+		enable_bit(PORTB,D4);
+	}
+	 
+	pulse_enable_pin(); 
 }
 
 
@@ -142,8 +143,8 @@ void send_half_byte(uint8_t input_byte)
 //---------------------------------------
 void send_full_byte (uint8_t input_byte)
 {
- send_half_byte(input_byte); 
- send_half_byte(input_byte<<4); 
+	send_half_byte(input_byte); 
+	send_half_byte(input_byte<<4); 
 
 }
 
@@ -162,8 +163,8 @@ void send_full_byte (uint8_t input_byte)
 //---------------------------------------
 void LCD_command (uint8_t cmd)
 {
- disable_bit(PORTB,RS); // Set Command Mode
- send_full_byte(cmd); // Send Command to LCD
+	disable_bit(PORTB,RS); // Set Command Mode
+	send_full_byte(cmd); // Send Command to LCD
 }
 
 
@@ -184,8 +185,8 @@ void LCD_command (uint8_t cmd)
 //---------------------------------------
 void LCD_data (uint8_t input_byte)
 {
- enable_bit(PORTB,RS); // Set Data Mode
- send_full_byte(input_byte); // Send Data to LCD
+	enable_bit(PORTB,RS); // Set Data Mode
+	send_full_byte(input_byte); // Send Data to LCD
 }
 
 
@@ -206,14 +207,14 @@ void LCD_data (uint8_t input_byte)
 void LCD_init()
 {
 	
- LCD_command(CONTROLLER_INIT); // Controller Init
- LCD_command(CURSOR_DISABLED); // Cursor Disabled
- LCD_command(SHIFT_RIGHT); // Shift Right
- LCD_command(FOUR_BIT_INPUT); // Input Mode = 4-bit
- LCD_command(FIVExEIGHT_CHAR_SIZE); // 5x8 character size, 2 line display
- LCD_command(CLEAR_DISPLAY); // Clear Display
- 
- _delay_ms(5);
+	LCD_command(CONTROLLER_INIT); // Controller Init
+	LCD_command(CURSOR_DISABLED); // Cursor Disabled
+	LCD_command(SHIFT_RIGHT); // Shift Right
+	LCD_command(FOUR_BIT_INPUT); // Input Mode = 4-bit
+	LCD_command(FIVExEIGHT_CHAR_SIZE); // 5x8 character size, 2 line display
+	LCD_command(CLEAR_DISPLAY); // Clear Display
+	 
+	_delay_ms(5);
  
 
 }
@@ -233,9 +234,9 @@ void LCD_init()
 //---------------------------------------
 void LCD_clear() 
 {
- LCD_command(CLEAR_DISPLAY); //LCD Clear Command
- 
- _delay_ms(5);
+	LCD_command(CLEAR_DISPLAY); //LCD Clear Command
+	 
+	_delay_ms(5);
 }
 
 
@@ -256,11 +257,11 @@ void LCD_clear()
 //---------------------------------------
 void LCD_set_cursor(uint8_t x, uint8_t y) 
 {
-  uint8_t address = 0 + x + CURSOR_SET; // Line 0 --> 0 offset
-  if (y == 1) {
-	address += 0x40;  // Line 1 --> 0x40 offset
-  }
-  LCD_command(address); // update cursor with x,y position
+	uint8_t address = 0 + x + CURSOR_SET; // Line 0 --> 0 offset
+	if (y == 1) {
+		address += 0x40;  // Line 1 --> 0x40 offset
+	}
+	LCD_command(address); // update cursor with x,y position
 }
 
 

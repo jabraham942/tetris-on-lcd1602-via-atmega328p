@@ -10,18 +10,18 @@ static int TETRIS_TICK_LENGTH = 500; //value in miliseconds
 typedef struct tetromino_location {
 	
 	
-		int orientation; //Current orientation of tetromino block (1-4)
-		int center_x, center_y; // Center block x and y coordinate
+	int orientation; //Current orientation of tetromino block (1-4)
+	int center_x, center_y; // Center block x and y coordinate
 		
-		int c_b1_x[4], c_b1_y[4]; //Difference between center block and block 1 as a function of orientation
-		int c_b2_x[4], c_b2_y[4]; //Difference between center block and block 2 as a function of orientation
-		int c_b3_x[4], c_b3_y[4]; //Difference between center block and block 3 as a function of orientation
+	int c_b1_x[4], c_b1_y[4]; //Difference between center block and block 1 as a function of orientation
+	int c_b2_x[4], c_b2_y[4]; //Difference between center block and block 2 as a function of orientation
+	int c_b3_x[4], c_b3_y[4]; //Difference between center block and block 3 as a function of orientation
 		
-		int block1_x, block1_y; // Block 1 x and y coordinate
-		int block2_x, block2_y; // Block 2 x and y coordinate
-		int block3_x, block3_y; // Block 3 x and y coordinate
+	int block1_x, block1_y; // Block 1 x and y coordinate
+	int block2_x, block2_y; // Block 2 x and y coordinate
+	int block3_x, block3_y; // Block 3 x and y coordinate
 	
-	} tetromino_location;
+} tetromino_location;
 	
 	
 	
@@ -156,31 +156,31 @@ int update_tetromino_location_struct(struct tetromino_location *t_loc_p) {
 //---------------------------------------
 int rotate_tetromino(struct tetromino_location *t_loc_p, int columns,  uint8_t tetris_state[][columns]) {
 	
-		if ((t_loc_p->center_y == 0) | (t_loc_p->block1_y == 0) | (t_loc_p->block2_y == 0) | (t_loc_p->block3_y == 0)) {
+	if ((t_loc_p->center_y == 0) | (t_loc_p->block1_y == 0) | (t_loc_p->block2_y == 0) | (t_loc_p->block3_y == 0)) {
 			
-			return -1;
-		}
+		return -1;
+	}
 	
-		tetris_state[t_loc_p->center_x][t_loc_p->center_y] = 0x00;
-		tetris_state[t_loc_p->block1_x][t_loc_p->block1_y] = 0x00;
-		tetris_state[t_loc_p->block2_x][t_loc_p->block2_y] = 0x00;
-		tetris_state[t_loc_p->block3_x][t_loc_p->block3_y] = 0x00;
+	tetris_state[t_loc_p->center_x][t_loc_p->center_y] = 0x00;
+	tetris_state[t_loc_p->block1_x][t_loc_p->block1_y] = 0x00;
+	tetris_state[t_loc_p->block2_x][t_loc_p->block2_y] = 0x00;
+	tetris_state[t_loc_p->block3_x][t_loc_p->block3_y] = 0x00;
 		
-		t_loc_p->orientation = (t_loc_p->orientation + 3) % 4;
+	t_loc_p->orientation = (t_loc_p->orientation + 3) % 4;
 
-		int rc = update_tetromino_location_struct(t_loc_p);
+	int rc = update_tetromino_location_struct(t_loc_p);
 		
-		if (rc == -1) {
+	if (rc == -1) {
 
-			t_loc_p->orientation = (t_loc_p->orientation + 1) % 4;
+		t_loc_p->orientation = (t_loc_p->orientation + 1) % 4;
 			
-			tetris_state[t_loc_p->center_x][t_loc_p->center_y] = 0x03;
-			tetris_state[t_loc_p->block1_x][t_loc_p->block1_y] = 0x03;
-			tetris_state[t_loc_p->block2_x][t_loc_p->block2_y] = 0x03;
-			tetris_state[t_loc_p->block3_x][t_loc_p->block3_y] = 0x03;
+		tetris_state[t_loc_p->center_x][t_loc_p->center_y] = 0x03;
+		tetris_state[t_loc_p->block1_x][t_loc_p->block1_y] = 0x03;
+		tetris_state[t_loc_p->block2_x][t_loc_p->block2_y] = 0x03;
+		tetris_state[t_loc_p->block3_x][t_loc_p->block3_y] = 0x03;
 						
-			return -3;
-		}
+		return -3;
+	}
 		
 		
 		
@@ -188,27 +188,27 @@ int rotate_tetromino(struct tetromino_location *t_loc_p, int columns,  uint8_t t
 		
 		
 		
-		rc = valid_tetromino_location(t_loc_p, columns, tetris_state);
+	rc = valid_tetromino_location(t_loc_p, columns, tetris_state);
 		
-		if (rc == 0) {
+	if (rc == 0) {
 
-			tetris_state[t_loc_p->center_x][t_loc_p->center_y] = 0x03;
-			tetris_state[t_loc_p->block1_x][t_loc_p->block1_y] = 0x03;
-			tetris_state[t_loc_p->block2_x][t_loc_p->block2_y] = 0x03;
-			tetris_state[t_loc_p->block3_x][t_loc_p->block3_y] = 0x03;
-		}
-		else {
+		tetris_state[t_loc_p->center_x][t_loc_p->center_y] = 0x03;
+		tetris_state[t_loc_p->block1_x][t_loc_p->block1_y] = 0x03;
+		tetris_state[t_loc_p->block2_x][t_loc_p->block2_y] = 0x03;
+		tetris_state[t_loc_p->block3_x][t_loc_p->block3_y] = 0x03;
+	}
+	else {
 
-			t_loc_p->orientation = (t_loc_p->orientation + 1) % 4;
-			update_tetromino_location_struct(t_loc_p);
-			tetris_state[t_loc_p->center_x][t_loc_p->center_y] = 0x03;
-			tetris_state[t_loc_p->block1_x][t_loc_p->block1_y] = 0x03;
-			tetris_state[t_loc_p->block2_x][t_loc_p->block2_y] = 0x03;
-			tetris_state[t_loc_p->block3_x][t_loc_p->block3_y] = 0x03;
+		t_loc_p->orientation = (t_loc_p->orientation + 1) % 4;
+		update_tetromino_location_struct(t_loc_p);
+		tetris_state[t_loc_p->center_x][t_loc_p->center_y] = 0x03;
+		tetris_state[t_loc_p->block1_x][t_loc_p->block1_y] = 0x03;
+		tetris_state[t_loc_p->block2_x][t_loc_p->block2_y] = 0x03;
+		tetris_state[t_loc_p->block3_x][t_loc_p->block3_y] = 0x03;
 			
-			return -2;		
+		return -2;		
 			
-		}
+	}
 	
 	return 0;
 }
@@ -266,24 +266,24 @@ int move_tetromino(struct tetromino_location *t_loc_p, int columns,  uint8_t tet
 	int rc = update_tetromino_location_struct(t_loc_p);
 	
 	if (rc == -1) {
-				if (direction == 0) {
-					t_loc_p->center_x -= 1;
-				}
-				else if(direction == 1) {
-					t_loc_p->center_x += 1;
+		if (direction == 0) {
+			t_loc_p->center_x -= 1;
+		}
+		else if(direction == 1) {
+			t_loc_p->center_x += 1;
 					
-				}
-				else if(direction == 2) {
+		}
+		else if(direction == 2) {
 					
-					t_loc_p->center_y += 1;
-				}
+			t_loc_p->center_y += 1;
+		}
 
-				tetris_state[t_loc_p->center_x][t_loc_p->center_y] = 0x03;
-				tetris_state[t_loc_p->block1_x][t_loc_p->block1_y] = 0x03;
-				tetris_state[t_loc_p->block2_x][t_loc_p->block2_y] = 0x03;
-				tetris_state[t_loc_p->block3_x][t_loc_p->block3_y] = 0x03;
+		tetris_state[t_loc_p->center_x][t_loc_p->center_y] = 0x03;
+		tetris_state[t_loc_p->block1_x][t_loc_p->block1_y] = 0x03;
+		tetris_state[t_loc_p->block2_x][t_loc_p->block2_y] = 0x03;
+		tetris_state[t_loc_p->block3_x][t_loc_p->block3_y] = 0x03;
 				
-				return -3;
+		return -3;
 				
 	}
 	
@@ -681,10 +681,6 @@ void load_J_tetromino(int columns, uint8_t tetris_state[][columns]) {
 // Output: None
 //---------------------------------------
 void load_I_tetromino(int columns, uint8_t tetris_state[][columns]) {
-	//LCD_data(0x02);//Bottom
-	//LCD_data(0x02);//Bottom
-	//LCD_data(0x02);//Bottom
-	//LCD_data(0x02);//Bottom
 
 		// Orientation = 0
 		// [B1]
@@ -698,7 +694,7 @@ void load_I_tetromino(int columns, uint8_t tetris_state[][columns]) {
 		
 		
 		
-		struct tetromino_location t_loc = {
+	struct tetromino_location t_loc = {
 			0, //orientation
 			2, //entry_row
 			16,			//entry_column
@@ -714,7 +710,7 @@ void load_I_tetromino(int columns, uint8_t tetris_state[][columns]) {
 			
 		0,0, 0,0, 0,0};
 
-		load_tetromino(columns, tetris_state, &t_loc);
+	load_tetromino(columns, tetris_state, &t_loc);
 	
 }
 
@@ -730,8 +726,6 @@ void load_I_tetromino(int columns, uint8_t tetris_state[][columns]) {
 // Output: None
 //---------------------------------------
 void load_O_tetromino(int columns, uint8_t tetris_state[][columns]) {
-	//LCD_data(0x03);//All
-	//LCD_data(0x03);//All
 	
 		// Orientation = 0
 		// [C ][B1]
@@ -743,7 +737,7 @@ void load_O_tetromino(int columns, uint8_t tetris_state[][columns]) {
 		// For B1-B3, these 3 arrays are the x/y difference between itself and the center block, based on the orientation 1-4
 		
 		
-		struct tetromino_location t_loc = {
+	struct tetromino_location t_loc = {
 			rand() % 4, //orientation
 			2, //entry_row
 			16,			//entry_column
@@ -759,7 +753,7 @@ void load_O_tetromino(int columns, uint8_t tetris_state[][columns]) {
 			
 		0,0, 0,0, 0,0};
 
-		load_tetromino(columns, tetris_state, &t_loc);
+	load_tetromino(columns, tetris_state, &t_loc);
 	
 	
 }
@@ -778,9 +772,6 @@ void load_O_tetromino(int columns, uint8_t tetris_state[][columns]) {
 // Output: None
 //---------------------------------------
 void load_T_tetromino(int columns, uint8_t tetris_state[][columns]) {
-	//LCD_data(0x02);//Bottom
-	//LCD_data(0x03);//All
-	//LCD_data(0x02);//Bottom
 	
 		// Orientation = 0
 		// [B1][C ][B2]
@@ -792,7 +783,7 @@ void load_T_tetromino(int columns, uint8_t tetris_state[][columns]) {
 		// For B1-B3, these 3 arrays are the x/y difference between itself and the center block, based on the orientation 1-4
 		
 		
-		struct tetromino_location t_loc = {
+	struct tetromino_location t_loc = {
 			rand() % 4, //orientation
 			2, //entry_row
 			16,			//entry_column
@@ -808,7 +799,7 @@ void load_T_tetromino(int columns, uint8_t tetris_state[][columns]) {
 			
 		0,0, 0,0, 0,0};
 
-		load_tetromino(columns, tetris_state, &t_loc);
+	load_tetromino(columns, tetris_state, &t_loc);
 	
 }
 
@@ -825,11 +816,6 @@ void load_T_tetromino(int columns, uint8_t tetris_state[][columns]) {
 // Output: None
 //---------------------------------------
 void load_S_tetromino(int columns, uint8_t tetris_state[][columns]) {
-	//LCD_data(0x02);//Bottom
-	//LCD_data(0x03);//All
-	//LCD_data(0x01);//Top
-	
-	
 		// Orientation = 0
 		//	   [B2][B1]
 		// [B3][C ]
@@ -840,7 +826,7 @@ void load_S_tetromino(int columns, uint8_t tetris_state[][columns]) {
 		// For B1-B3, these 3 arrays are the x/y difference between itself and the center block, based on the orientation 1-4
 		
 		
-		struct tetromino_location t_loc = {
+	struct tetromino_location t_loc = {
 			rand() % 4, //orientation
 			2, //entry_row
 			16,			//entry_column
@@ -856,7 +842,7 @@ void load_S_tetromino(int columns, uint8_t tetris_state[][columns]) {
 			
 		0,0, 0,0, 0,0};//Block1, Block2, Block3
 		
-		load_tetromino(columns, tetris_state, &t_loc);
+	load_tetromino(columns, tetris_state, &t_loc);
 	
 }
 
@@ -874,9 +860,6 @@ void load_S_tetromino(int columns, uint8_t tetris_state[][columns]) {
 // Output: None
 //---------------------------------------
 void load_Z_tetromino(int columns, uint8_t tetris_state[][columns]) {
-	//LCD_data(0x01);//Top
-	//LCD_data(0x03);//All
-	//LCD_data(0x02);//Bottom
 
 		// Orientation = 0
 		// [B1][B2]
@@ -924,10 +907,6 @@ void load_Z_tetromino(int columns, uint8_t tetris_state[][columns]) {
 // Output: None
 //---------------------------------------
 void load_L_tetromino(int columns, uint8_t tetris_state[][columns]) {
-	
-		//LCD_data(0x02);//Bottom
-		//LCD_data(0x02);//Bottom
-		//LCD_data(0x03);//All
 
 		// Orientation = 0
 		// [B2][B1]
