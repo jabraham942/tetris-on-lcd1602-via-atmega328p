@@ -4,7 +4,7 @@ Program which executes Tetris on an LCD1602 display via Atmega328p microcontroll
 
 
 ## Instructions:
-1. Compile main.c and program resulting .hex file in atmega328p's flash memory
+1. Compile main.c using Atmel Studio 7 or similar method and program resulting .hex file in atmega328p's flash memory
 2. Manipulate falling tetromino block via the following actions on joystick:
 	* Move joystick up    --> Rotate tetromino block
 	* Move joystick left  --> Move tetromino block left
